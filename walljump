@@ -1,0 +1,45 @@
+
+int onWall = mem.Read<int>(lPlayer + OFFSET_WALL_RUN_START_TIME);
+if (onWall != onWallTmp)
+{
+	if (mem.Read<int>(g_Base + OFFSET_MOVE_FORWARD) == 0)
+	{
+		wallJumpNow = 1;
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 5);
+	}
+}
+onWallTmp = onWall;
+ 
+int onWallOff = mem.Read<int>(lPlayer + OFFSET_WALL_RUN_CLEAR_TIME);
+if (wallJumpNow == 1)
+{
+ 
+	if (onWallOff != onWallOffTmp)
+	{
+		wallJumpNow = 0;
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 4);
+	}
+}
+onWallOffTmp = onWallOff;
+ 
+ 
+float onEdge = mem.Read<float>(lPlayer + OFFSET_TRAVERSAL_PROGRESS);
+if (onEdge != onEdgeTmp)
+{
+	if (mem.Read<int>(g_Base + OFFSET_MOVE_FORWARD) == 0)
+	{
+		wallJumpNow = 2;
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 5);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
+}
+onEdgeTmp = onEdge;
+ 
+if (wallJumpNow == 2)
+{
+	if ((mem.Read<uint32_t>(lPlayer + OFFSET_FLAGS) & 0x1) == 1)
+	{
+		wallJumpNow = 0;
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 4);
+	}
+}
