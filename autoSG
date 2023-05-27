@@ -1,0 +1,122 @@
+//memorycheat
+m_traversalProgress = mem.Read<float>(lPlayer + OFFSET_TRAVERSAL_PROGRESS);
+if (superGlideKey && m_traversalProgress > 0.85 && m_traversalProgress < 1.0)
+{
+	superGlideStart = true;
+}
+ 
+if (superGlideStart)
+{
+	superGlideTimer ++;
+ 
+	if (superGlideTimer == 5)
+	{
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 5);
+	}
+	else if (superGlideTimer == 6)
+	{
+		mem.Write<int>(g_Base + OFFSET_FORCE_DUCK_TOGGLE, 6);
+	}
+	else if (superGlideTimer == 14)
+	{
+		mem.Write<int>(g_Base + OFFSET_FORCE_JUMP, 4);
+		m_traversalProgressTmp = m_traversalProgress;
+	}
+	else if (superGlideTimer > 10 && m_traversalProgress != m_traversalProgressTmp)
+	{
+		superGlideStart = false;
+		superGlideTimer = 0;
+	}
+}
+//squirrlscript
+void function OnSmallMantle( entity firstPersonProxy )
+                                                                                                                                                     
+{
+	entity localPlayer = GetLocalClientPlayer();
+    bool isTraversing = localPlayer.IsTraversing();
+    bool transitionComplete = false;
+    while (isTraversing || !transitionComplete) {
+        if (isTraversing && !transitionComplete && !localPlayer.IsTraversing()) {
+            if (!InputIsButtonDown(KEY_SPACE)) {
+				return
+			}
+			
+            EmitSoundOnEntity( firstPersonProxy, "mantle_smallmantle" )
+            localPlayer.ClientCommand("+jump");
+            localPlayer.ClientCommand("+duck");
+            localPlayer.ClientCommand("-jump");
+            localPlayer.ClientCommand("-duck");
+            transitionComplete = true;
+        }
+        isTraversing = localPlayer.IsTraversing();
+        WaitFrame();
+    }
+}
+ 
+ 
+void function OnMediumMantle(entity firstPersonProxy) {
+    entity localPlayer = GetLocalClientPlayer();
+    bool isTraversing = localPlayer.IsTraversing();
+    bool transitionComplete = false;
+    while (isTraversing || !transitionComplete) {
+        if (isTraversing && !transitionComplete && !localPlayer.IsTraversing()) {
+            if (!InputIsButtonDown(KEY_SPACE)) {
+				return
+			}
+            EmitSoundOnEntity(firstPersonProxy, "mantle_mediummantle");
+            localPlayer.ClientCommand("+jump");
+            localPlayer.ClientCommand("+duck");
+            localPlayer.ClientCommand("-jump");
+            localPlayer.ClientCommand("-duck");
+            transitionComplete = true;
+        }
+        isTraversing = localPlayer.IsTraversing();
+        WaitFrame();
+    }
+}
+ 
+ 
+void function OnLowMantle( entity firstPersonProxy )                                                                                                                                                   
+{
+	entity localPlayer = GetLocalClientPlayer();
+    bool isTraversing = localPlayer.IsTraversing();
+    bool transitionComplete = false;
+ 
+    while (isTraversing || !transitionComplete) {
+        if (isTraversing && !transitionComplete && !localPlayer.IsTraversing()) {
+            if (!InputIsButtonDown(KEY_SPACE)) {
+				return
+			}
+            EmitSoundOnEntity( firstPersonProxy, "mantle_lowmantle" )
+            localPlayer.ClientCommand("+jump");
+            localPlayer.ClientCommand("+duck");
+            localPlayer.ClientCommand("-jump");
+            localPlayer.ClientCommand("-duck");
+            transitionComplete = true;
+        }
+        isTraversing = localPlayer.IsTraversing();
+        WaitFrame();
+    }
+}
+ 
+ 
+void function OnExtraLowMantle(entity firstPersonProxy) {
+	entity localPlayer = GetLocalClientPlayer();
+    bool isTraversing = localPlayer.IsTraversing();
+    bool transitionComplete = false;
+    while (isTraversing || !transitionComplete) {
+        if (isTraversing && !transitionComplete && !localPlayer.IsTraversing()) {
+            if (!InputIsButtonDown(KEY_SPACE)) {
+				return
+			}
+            EmitSoundOnEntity(firstPersonProxy, "mantle_extralow");
+            localPlayer.ClientCommand("+jump");
+            localPlayer.ClientCommand("+duck");
+            localPlayer.ClientCommand("-jump");
+            localPlayer.ClientCommand("-duck");
+            transitionComplete = true;
+        }
+        isTraversing = localPlayer.IsTraversing();
+        WaitFrame();
+    }
+}
