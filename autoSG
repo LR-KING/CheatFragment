@@ -29,6 +29,8 @@ if (superGlideStart)
 	}
 }
 //squirrlscript
+englishclient_mp_common.bsp.pak000_dir
+cl_player.gunt
 void function OnSmallMantle( entity firstPersonProxy )
                                                                                                                                                      
 {
