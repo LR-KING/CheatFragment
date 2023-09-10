@@ -1,0 +1,18 @@
+  if(player->isCrosshair()){
+                x11Utils->mouseClick(1);
+                sleep(500/1000);
+            }
+  float getCrosshair()
+    {
+        long basePointer = getBasePointer();
+        long ptrLong = basePointer + offsets::lastCrosshairTargetTime;
+        float result = mem::ReadFloat(ptrLong);
+        return result;
+    }
+  bool isCrosshair()
+    {
+        const float lastCrosshairTime = getCrosshair();
+        const bool isCrosshair = lastCrosshairTime > m_lastCrosshairTime;
+        m_lastCrosshairTime = lastCrosshairTime;
+        return isCrosshair;
+    }
