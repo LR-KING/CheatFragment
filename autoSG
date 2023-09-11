@@ -28,6 +28,52 @@ if (superGlideStart)
 		superGlideTimer = 0;
 	}
 }
+
+//another source
+#define EA_IN_JUMP 0x0743e428
+#define EA_IN_DUCK 0x0be96648
+#define EA_TIME_BASE 0x2108
+#define EA_m_traversalProgress 0x2b5c
+#define EA_m_traversalStartTime 0x2b60
+void Superglide() {
+ 
+	float WorldTime = Memory.Read<float>(MyLocalplayer + EA_TIME_BASE);
+	float m_traversalStartTime = Memory.Read<float>(Memory.BaseAddress + EA_m_traversalStartTime);
+	float m_traversalProgress = Memory.Read<float>(Memory.BaseAddress + EA_m_traversalProgress);
+	auto HangOnWall = -(m_traversalStartTime - WorldTime);
+ 
+	while (true) {
+ 
+		if (m_traversalProgress > 0.87f && !settings::startSg == true && HangOnWall > 0.05f && HangOnWall < 1.5f) {
+			//start SG
+			settings::startjumpTime = WorldTime;
+		}
+ 
+		if (settings::startSg) {
+			//press button
+			Memory.Write<int>(Memory.BaseAddress + EA_IN_JUMP + 0x8, 7);
+			if ((WorldTime - settings::startjumpTime) > 0.007) {
+				Memory.Write<int>(Memory.BaseAddress + EA_IN_DUCK + 0x8, 6);
+			}
+ 
+			if ((WorldTime - settings::startjumpTime) > 1.5f && settings::startSg == false) {
+				//need to release button
+				Memory.Write<int>(Memory.BaseAddress + EA_IN_JUMP + 0x8, 4);
+				Memory.Write<int>(Memory.BaseAddress + EA_IN_DUCK + 0x8, 4);
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 //squirrlscript
 englishclient_mp_common.bsp.pak000_dir
 cl_player.gunt
