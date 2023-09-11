@@ -1,0 +1,30 @@
+void cheats::NoWeaponViewModel()
+{
+	while (true) {
+		if (settings::NoWeaponViewModel) {
+			DWORD_PTR MyLocalplayer = Memory.Read<DWORD_PTR>(Memory.BaseAddress + m_LocalPlayer);
+ 
+			DWORD64 ViewModelHandle = Memory.Read<DWORD64>(MyLocalplayer + OFFSET_VIEWMODEL) & 0xFFFF; //m_hViewModels
+			DWORD64 ViewModelPtr = Memory.Read<DWORD64>(Memory.BaseAddress + m_cl_entitylist + ViewModelHandle * 0x20);
+ 
+			Memory.Write<int>(ViewModelPtr + 0x3C8, 1);
+			Memory.Write<int>(ViewModelPtr + 0x3D0, 2);
+			Memory.Write<GlowMode>(ViewModelPtr + 0x2C4, { 101,101,50,0 });
+			Memory.Write<float>(ViewModelPtr + 0x1D0, 65.f);
+			Memory.Write<float>(ViewModelPtr + 0x1D4, 35.f);
+			Memory.Write<float>(ViewModelPtr + 0x1D8, 10.f);
+		}
+		else {
+			DWORD_PTR MyLocalplayer = Memory.Read<DWORD_PTR>(Memory.BaseAddress + m_LocalPlayer);
+ 
+			DWORD64 ViewModelHandle = Memory.Read<DWORD64>(MyLocalplayer + OFFSET_VIEWMODEL) & 0xFFFF; //m_hViewModels
+			DWORD64 ViewModelPtr = Memory.Read<DWORD64>(Memory.BaseAddress + m_cl_entitylist + ViewModelHandle * 0x20);
+			Memory.Write<int>(ViewModelPtr + 0x3C8, 0);
+			Memory.Write<int>(ViewModelPtr + 0x3D0, 0);
+			Memory.Write<GlowMode>(ViewModelPtr + 0x2C4, { 101,101,46,0 });
+			Memory.Write<float>(ViewModelPtr + 0x1D0, 1.f);
+			Memory.Write<float>(ViewModelPtr + 0x1D4, 19.f);
+			Memory.Write<float>(ViewModelPtr + 0x1D8, 20.f);
+		}
+	}
+}
