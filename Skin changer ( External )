@@ -1,0 +1,6 @@
+if (settings::skinchanger) {
+					DWORD64 LastWeapon = Memory.Read<DWORD64>(Entity + EA_m_latestPrimaryWeapons) & 0xFFFF;
+					DWORD64 Weapon = Memory.Read<DWORD64>(Memory.BaseAddress + m_cl_entitylist + (LastWeapon << 5));
+					Memory.Write<int>(Weapon + OFFSET_m_nSkin, settings::SkinID);
+ 
+				}
