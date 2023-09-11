@@ -1,0 +1,36 @@
+void Triggerbot(PlayerData player) {
+	if (Config.enableTriggerbot && GetAsyncKeyState(VK_RBUTTON) && !(GetAsyncKeyState(VK_LBUTTON)) && player.visible && !player.isDown) {
+ 
+		uintptr_t actWeaponID;
+		driver->GetAddress<uintptr_t>((void*)(globalLocalPlayer + OFFSET_CURRENTWEAPON), actWeaponID) & 0xFFFF; // offset current weapon
+		uintptr_t currentWeapon = GetEntityBase(driver, mod, actWeaponID);
+ 
+		if (currentWeapon != 0 || hasWeapon) {
+			int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+			int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+ 
+			int cursorX = screenWidth / 2;
+			int cursorY = screenHeight / 2;
+ 
+			// prüfen ob die Mitte des Bildschirmes sich zwischen ganz links und ganz rechts vom Spieler befindet
+ 
+			int playerMiddleX = (player.middle + (player.width / 2));
+			int playerMiddleY = (player.w2sHead.Y + (player.height / 2));
+			int toleranceXY = 100 / player.realDistance;
+			// 1 m = 50 Pixel Toleranz50
+			// 10m = Toleranz von 5 Pixel
+			// 20m = Toleranz von 2,5 Pixel
+			// 5m = Toleranz von 7,5 Pixel
+ 
+			if (cursorX >= playerMiddleX - toleranceXY && cursorX <= (playerMiddleX + toleranceXY)) {
+				// prüfen ob die Mitte des Bildschirmes sich zwischen ganz oben und ganz unten vom Spieler befindet
+				if (cursorY >= (player.w2sHead.Y) && cursorY <= (player.w2sHead.Y + player.height)) {
+					// dann automatisch Links klick!
+					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+					Sleep(1);
+					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+				}
+			}
+		}
+	}
+}
