@@ -1,0 +1,12 @@
+void cheats::Bhop() {
+	while (true) {
+		if (settings::bhop) {
+			if ((Inputs::keydown(VK_SPACE))) {
+				Memory.Write<int>(Memory.BaseAddress + EA_IN_JUMP + 0x08, 5);
+				Sleep(5);
+				Memory.Write<int>(Memory.BaseAddress + EA_IN_JUMP + 0x08, 4);
+				Sleep(5);
+			}
+		}
+	}
+}
